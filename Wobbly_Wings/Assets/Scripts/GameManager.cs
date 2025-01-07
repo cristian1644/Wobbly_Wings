@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public Player player;
     public Text scoreText;
     public GameObject playButton;
+    public GameObject startGame;
     public GameObject gameOver;
 
     private int score;
@@ -25,6 +26,7 @@ public class GameManager : MonoBehaviour
         scoreText.text = score.ToString();
 
         playButton.SetActive(false);
+        startGame.SetActive(false);
         gameOver.SetActive(false);
 
         player.transform.position = new Vector3(0f, 0f, 0f);
