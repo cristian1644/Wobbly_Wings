@@ -11,6 +11,9 @@ public class Player : MonoBehaviour
     public float gravity = -9.8f;
     public float strength = 5f;
 
+    private float screenTop;    // Limite superiore dello schermo
+    private float screenBottom; // Limite inferiore dello schermo
+
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -18,6 +21,11 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        // Calcola i limiti dello schermo in unità mondo
+        Camera mainCamera = Camera.main;
+        screenTop = mainCamera.ViewportToWorldPoint(new Vector3(0, 1, 0)).y;
+        screenBottom = mainCamera.ViewportToWorldPoint(new Vector3(0, 0, 0)).y;
+
         InvokeRepeating(nameof(AnimateSprite), 0.15f, 0.15f);
     }
 
@@ -46,7 +54,14 @@ public class Player : MonoBehaviour
             }
         }
         direction.y += gravity * Time.deltaTime;
-        transform.position += direction * Time.deltaTime;
+        // Applica il movimento
+        Vector3 position = transform.position + direction * Time.deltaTime;
+
+        // Limita la posizione verticale del giocatore
+        position.y = Mathf.Clamp(position.y, screenBottom, screenTop);
+
+        // Aggiorna la posizione del giocatore
+        transform.position = position;
     }
 
     private void AnimateSprite()
