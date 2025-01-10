@@ -38,6 +38,18 @@ public class Player : MonoBehaviour
     private void Update()
     {
 
+        // Blocca gli input del giocatore se il gioco è in pausa
+        if (PauseMenu.isPaused)
+        {
+            return;
+        }
+
+        if (IsPointerOverUI())
+        {
+            return; // Ignora gli input se clicco su un elemento UI
+        }
+
+
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
         {
             if (EventSystem.current.IsPointerOverGameObject())
@@ -66,6 +78,22 @@ public class Player : MonoBehaviour
 
         // Aggiorna la posizione del giocatore
         transform.position = position;
+    }
+
+    private bool IsPointerOverUI()
+    {
+
+        // Per dispositivi mobili: controlla tutti i tocchi
+        if (Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+            if (EventSystem.current.IsPointerOverGameObject(touch.fingerId))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void AnimateSprite()

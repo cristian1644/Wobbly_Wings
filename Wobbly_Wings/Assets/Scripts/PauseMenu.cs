@@ -10,26 +10,32 @@ public class PauseMenu : MonoBehaviour
     public Player player;
     public GameManager gameManager;
 
+    public static bool isPaused = false;
+
     public void Pause()
     {
+        isPaused = true;
         pauseMenu.SetActive(true);
         Time.timeScale = 0;
     }
 
     public void Home()
     {
+        isPaused = false;
         SceneManager.LoadScene("SampleScene");
         Time.timeScale = 1;
     }
 
     public void Resume()
     {
+        isPaused = false;
         pauseMenu.SetActive(false);
         Time.timeScale = 1;
     }
 
     public void Restart()
     {
+        isPaused = false;
         pauseMenu.SetActive(false);
 
         // Reset direzione (velocità del giocatore) e movimento
