@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 
 public class Player : MonoBehaviour
 {
+    private AudioManager audioManager;
     private SpriteRenderer spriteRenderer;
     public Sprite[] sprites;
     private int spriteIndex;
@@ -26,6 +27,12 @@ public class Player : MonoBehaviour
         Camera mainCamera = Camera.main;
         screenTop = mainCamera.ViewportToWorldPoint(new Vector3(0, 1, 0)).y;
         screenBottom = mainCamera.ViewportToWorldPoint(new Vector3(0, 0, 0)).y;
+
+        audioManager = FindObjectOfType<AudioManager>();
+        if (audioManager == null)
+        {
+            Debug.LogWarning("AudioManager non è stato trovato nella scena.");
+        }
 
         InvokeRepeating(nameof(AnimateSprite), 0.15f, 0.15f);
     }
@@ -56,7 +63,7 @@ public class Player : MonoBehaviour
             {
                 return;
             }
-
+            audioManager.PlayFlapSound();
             direction = Vector3.up * strength;
         }
 
@@ -66,6 +73,7 @@ public class Player : MonoBehaviour
 
             if (touch.phase == TouchPhase.Began)
             {
+                audioManager.PlayFlapSound();
                 direction = Vector3.up * strength;
             }
         }
@@ -111,6 +119,7 @@ public class Player : MonoBehaviour
     {
         if (other.gameObject.tag == "Obstacle")
         {
+            audioManager.PlayCollisionSound();
             FindObjectOfType<GameManager>().GameOver();
         }
         else if (other.gameObject.tag == "Scoring")
