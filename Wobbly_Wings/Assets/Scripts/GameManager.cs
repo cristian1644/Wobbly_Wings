@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public GameObject playButton;
     public GameObject startGame;
     public GameObject gameOver;
+    public GameObject pauseButton;
 
     private int score;
 
@@ -28,6 +29,7 @@ public class GameManager : MonoBehaviour
         playButton.SetActive(false);
         startGame.SetActive(false);
         gameOver.SetActive(false);
+        pauseButton.SetActive(true);
 
         player.transform.position = new Vector3(0f, 0f, 0f);
 
