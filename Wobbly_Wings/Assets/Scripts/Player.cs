@@ -128,6 +128,14 @@ public class Player : MonoBehaviour
         }
     }
 
+    // Funzione per cambiare gli sprite in base al personaggio scelto
+    public void ChangeCharacter(Sprite[] newSprites)
+    {
+        sprites = newSprites; // Cambia l'array di sprite
+        spriteIndex = 0; // Resetta l'indice per partire dal primo sprite
+        spriteRenderer.sprite = sprites[spriteIndex]; // Imposta il primo sprite
+    }
+
 }
 
 
