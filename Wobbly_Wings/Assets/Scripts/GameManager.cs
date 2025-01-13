@@ -55,6 +55,7 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        pauseButton.SetActive(false);
         gameOver.SetActive(true);
         playButton.SetActive(true);
         Pause();

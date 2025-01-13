@@ -2239,6 +2239,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: e022ee6049de43d42992a511994a667d, type: 3}
   birdButton: {fileID: 8204505}
   beeButton: {fileID: 409376089}
+  characterMenuButton: {fileID: 562524962}
   characterSelectPanel: {fileID: 1456124215}
 --- !u!1 &718868666
 GameObject:

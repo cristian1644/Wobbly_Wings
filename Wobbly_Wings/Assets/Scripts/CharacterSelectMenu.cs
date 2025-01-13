@@ -8,6 +8,7 @@ public class CharacterSelectMenu : MonoBehaviour
     public Sprite[] beeSprites; // Sprite per il personaggio "Cat"
     public Button birdButton; // Pulsante per selezionare il personaggio "Bird"
     public Button beeButton; // Pulsante per selezionare il personaggio "Cat"
+    public GameObject characterMenuButton;
     public GameObject characterSelectPanel; // Pannello del menu di selezione personaggio
 
     // Assicurati di avere un solo metodo Start()
@@ -36,12 +37,14 @@ public class CharacterSelectMenu : MonoBehaviour
     public void OpenMenu()
     {
         characterSelectPanel.SetActive(true); // Mostra il menu
+        characterMenuButton.SetActive(false);
     }
 
     // Funzione per chiudere il menu
     public void CloseMenu()
     {
         characterSelectPanel.SetActive(false); // Mostra il menu
+        characterMenuButton.SetActive(true);
     }
 }
 
