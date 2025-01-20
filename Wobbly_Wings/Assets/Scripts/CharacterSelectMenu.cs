@@ -25,32 +25,39 @@ public class CharacterSelectMenu : MonoBehaviour
         beeButton.onClick.AddListener(SelectBee);
     }
 
-    // Funzione per selezionare il personaggio "Bird"
     void SelectBird()
     {
-        player.ChangeCharacter(birdSprites); // Cambia gli sprite del personaggio con quelli del "Bird"
-        characterSelectPanel.SetActive(false); // Nascondi il menu dopo la selezione
+        player.ChangeCharacter(birdSprites);
+        PlayerPrefs.SetInt("SelectedCharacter", 0); // Salva l'indice del personaggio scelto (0 = Bird)
+        PlayerPrefs.Save();
+        characterSelectPanel.SetActive(false);
         characterMenuButton.SetActive(true);
     }
 
     void SelectBlueBird()
     {
-        player.ChangeCharacter(blueBirdSprites); // Cambia gli sprite del personaggio con quelli del "Bird"
-        characterSelectPanel.SetActive(false); // Nascondi il menu dopo la selezione
+        player.ChangeCharacter(blueBirdSprites);
+        PlayerPrefs.SetInt("SelectedCharacter", 1); // Salva l'indice del personaggio scelto (1 = BlueBird)
+        PlayerPrefs.Save();
+        characterSelectPanel.SetActive(false);
         characterMenuButton.SetActive(true);
     }
 
     void SelectOrangeBird()
     {
-        player.ChangeCharacter(orangeBirdSprites); // Cambia gli sprite del personaggio con quelli del "Bird"
-        characterSelectPanel.SetActive(false); // Nascondi il menu dopo la selezione
+        player.ChangeCharacter(orangeBirdSprites);
+        PlayerPrefs.SetInt("SelectedCharacter", 2); // Salva l'indice del personaggio scelto (2 = OrangeBird)
+        PlayerPrefs.Save();
+        characterSelectPanel.SetActive(false);
         characterMenuButton.SetActive(true);
     }
 
     void SelectBee()
     {
-        player.ChangeCharacter(beeSprites); // Cambia gli sprite del personaggio con quelli del "Cat"
-        characterSelectPanel.SetActive(false); // Nascondi il menu dopo la selezione
+        player.ChangeCharacter(beeSprites);
+        PlayerPrefs.SetInt("SelectedCharacter", 3); // Salva l'indice del personaggio scelto (3 = Bee)
+        PlayerPrefs.Save();
+        characterSelectPanel.SetActive(false);
         characterMenuButton.SetActive(true);
     }
 

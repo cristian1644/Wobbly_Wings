@@ -16,9 +16,36 @@ public class Player : MonoBehaviour
     private float screenTop;    // Limite superiore dello schermo
     private float screenBottom; // Limite inferiore dello schermo
 
+    public Sprite[] birdSprites;
+    public Sprite[] blueBirdSprites;
+    public Sprite[] orangeBirdSprites;
+    public Sprite[] beeSprites;
+
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        // Carica il personaggio selezionato da PlayerPrefs
+        int selectedCharacter = PlayerPrefs.GetInt("SelectedCharacter", 0); // Di default 0 è il personaggio di default
+
+        switch (selectedCharacter)
+        {
+            case 0:
+                ChangeCharacter(birdSprites); // Seleziona il personaggio Bird
+                break;
+            case 1:
+                ChangeCharacter(blueBirdSprites); // Seleziona il personaggio BlueBird
+                break;
+            case 2:
+                ChangeCharacter(orangeBirdSprites); // Seleziona il personaggio OrangeBird
+                break;
+            case 3:
+                ChangeCharacter(beeSprites); // Seleziona il personaggio Bee
+                break;
+            default:
+                ChangeCharacter(birdSprites); // Se non c'è selezione, imposta il personaggio di default
+                break;
+        }
     }
 
     private void Start()
@@ -34,8 +61,30 @@ public class Player : MonoBehaviour
             Debug.LogWarning("AudioManager non è stato trovato nella scena.");
         }
 
+        // Carica il personaggio salvato (se esiste)
+        int selectedCharacter = PlayerPrefs.GetInt("SelectedCharacter", 0); // Carica l'indice salvato, di default 0
+        switch (selectedCharacter)
+        {
+            case 0:
+                ChangeCharacter(birdSprites); // Seleziona il personaggio Bird
+                break;
+            case 1:
+                ChangeCharacter(blueBirdSprites); // Seleziona il personaggio BlueBird
+                break;
+            case 2:
+                ChangeCharacter(orangeBirdSprites); // Seleziona il personaggio OrangeBird
+                break;
+            case 3:
+                ChangeCharacter(beeSprites); // Seleziona il personaggio Bee
+                break;
+            default:
+                ChangeCharacter(birdSprites); // Se non c'è selezione, imposta il personaggio di default
+                break;
+        }
+
         InvokeRepeating(nameof(AnimateSprite), 0.15f, 0.15f);
     }
+
 
     private void OnEnable()
     {

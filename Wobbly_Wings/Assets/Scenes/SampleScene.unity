@@ -2051,6 +2051,24 @@ MonoBehaviour:
   direction: {x: 0, y: 0, z: 0}
   gravity: -9.8
   strength: 5
+  birdSprites:
+  - {fileID: 21300000, guid: bc3691b7fb85c8f458a532907a370de5, type: 3}
+  - {fileID: 21300000, guid: 79d6540ca49972842ad7f71b5b20227d, type: 3}
+  - {fileID: 21300000, guid: c2bd11e6b559c2241a0bb40f55a45758, type: 3}
+  blueBirdSprites:
+  - {fileID: 21300000, guid: e727d408f32bd134682deccecaa59547, type: 3}
+  - {fileID: 21300000, guid: 126aa57c7ec768d4cb228f78a6e97ac5, type: 3}
+  - {fileID: 21300000, guid: afd622b38f943da4aa8a53ce74e868d2, type: 3}
+  - {fileID: 21300000, guid: 4c9d6951000430f4796fc1aadefe7bfe, type: 3}
+  orangeBirdSprites:
+  - {fileID: 21300000, guid: fa2147ed74a7e474d92a4b002db889f6, type: 3}
+  - {fileID: 21300000, guid: 9de8e9c39962d724d982e49acbecddfc, type: 3}
+  - {fileID: 21300000, guid: f75d9aa78e4e59e4eb003ed341a2a5e9, type: 3}
+  - {fileID: 21300000, guid: 1d9a2d168398ac044b5da8d4c2bfb497, type: 3}
+  beeSprites:
+  - {fileID: 21300000, guid: 608e3f5f7415e4c45b2e5ad35f455ca5, type: 3}
+  - {fileID: 21300000, guid: 09738bc41adb4ed4cba726caff8b202f, type: 3}
+  - {fileID: 21300000, guid: e022ee6049de43d42992a511994a667d, type: 3}
 --- !u!58 &686139421
 CircleCollider2D:
   m_ObjectHideFlags: 0
