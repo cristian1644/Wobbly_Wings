@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "722514662291",
+    "firebase_url": "https://login-53d3f-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "login-53d3f",
+    "storage_bucket": "login-53d3f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:722514662291:android:64f7a8b2075bab04b08e66",
+        "android_client_info": {
+          "package_name": "com.Cristian.WobblyWings"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAA0k5kbu0XWqcfVU-9OYB5fFiZK3hxyPc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
