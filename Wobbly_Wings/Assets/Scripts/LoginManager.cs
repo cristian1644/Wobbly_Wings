@@ -4,6 +4,7 @@ using Firebase;
 using Firebase.Auth;
 using Firebase.Extensions;
 using System.Threading.Tasks;
+using Firebase.Database;
 
 public class LoginManager : MonoBehaviour
 {
@@ -21,14 +22,52 @@ public class LoginManager : MonoBehaviour
 
     private bool isUserLoggedIn = false; // Indica se l'utente è loggato
 
+    private DatabaseReference databaseReference;
+
+
 
 
     private async void Start()
     {
-        // Inizializza Firebase in modo asincrono, controllando le dipendenze
+        // Inizializza Firebase prima di fare altre operazioni
         await InitializeFirebase();
-        errorMessage.gameObject.SetActive(false); // Nascondi il messaggio di errore all'inizio
+
+        if (!isFirebaseReady)
+        {
+            Debug.LogError("Firebase is not ready yet.");
+            return; // Fermiamo il codice se Firebase non è pronto
+        }
+
+        // Verifica se i riferimenti sono inizializzati
+        if (loginPanel == null || userPanel == null)
+        {
+            Debug.LogError("LoginPanel or UserPanel are not assigned in the Inspector!");
+            return; // Fermiamo il codice se uno dei pannelli non è stato assegnato
+        }
+
+        // Controlliamo se l'utente è già loggato (se è presente la chiave "UserLoggedIn" in PlayerPrefs)
+        if (PlayerPrefs.GetString("UserLoggedIn", "false") == "true")
+        {
+            isUserLoggedIn = true;
+            loginPanel.SetActive(false);
+            userPanel.SetActive(true);
+
+            FirebaseUser user = auth.CurrentUser;
+            if (user != null)
+            {
+                UpdateUserInfo();
+            }
+        }
+        else
+        {
+            loginPanel.SetActive(true);
+            userPanel.SetActive(false);
+        }
+
+        errorMessage.gameObject.SetActive(false);
     }
+
+
 
     // Metodo per inizializzare Firebase
     private async Task InitializeFirebase()
@@ -40,6 +79,7 @@ public class LoginManager : MonoBehaviour
         {
             // Se le dipendenze sono corrette, inizializza Firebase Auth
             auth = FirebaseAuth.DefaultInstance;
+            databaseReference = FirebaseDatabase.DefaultInstance.RootReference;
             isFirebaseReady = true;  // Imposta Firebase come pronto
             Debug.Log("Firebase initialized successfully!");
         }
@@ -105,11 +145,27 @@ public class LoginManager : MonoBehaviour
             {
                 isUserLoggedIn = true; // L'utente è ora loggato
 
+                // Salviamo lo stato di login
+                PlayerPrefs.SetString("UserLoggedIn", "true"); // Imposta "true" per indicare che l'utente è loggato
+                PlayerPrefs.Save(); // Salva subito i dati
+
                 // Nascondi il pannello di login
                 loginPanel.SetActive(false);
 
                 // Mostra il pannello utente
                 userPanel.SetActive(true);
+
+                // Salva i dati utente (solo se sono nuovi o modificati)
+                FirebaseUser user = auth.CurrentUser;
+                if (user != null)
+                {
+                    // Crea un oggetto utente con un record di esempio
+                    UserData userData = new UserData(user.Email, 0); // Record iniziale = 0
+                    string userId = user.UserId;
+
+                    // Salva i dati nel database
+                    databaseReference.Child("users").Child(userId).SetRawJsonValueAsync(JsonUtility.ToJson(userData));
+                }
 
                 // Aggiorna i dati utente (es. username e punteggio)
                 UpdateUserInfo();
@@ -124,6 +180,10 @@ public class LoginManager : MonoBehaviour
         Debug.Log("User logged out.");
 
         isUserLoggedIn = false; // L'utente non è più loggato
+
+        // Reset dello stato di login in PlayerPrefs
+        PlayerPrefs.SetString("UserLoggedIn", "false");
+        PlayerPrefs.Save(); // Salva subito i dati
 
         // Nascondi il pannello utente
         userPanel.SetActive(false);
@@ -229,12 +289,81 @@ public class LoginManager : MonoBehaviour
         FirebaseUser user = auth.CurrentUser;
         if (user != null)
         {
-            // Imposta lo username (puoi cambiarlo se hai altri dati da Firebase)
-            usernameText.text = $"Username: {user.Email}";
+            string userId = user.UserId;
 
-            // Recupera il punteggio massimo (placeholder: impostalo manualmente per ora)
-            highScoreText.text = "High Score: 0"; // In futuro, lo collegheremo a un database
+            // Leggi i dati dell'utente dal database
+            databaseReference.Child("users").Child(userId).GetValueAsync().ContinueWithOnMainThread(task =>
+            {
+                if (task.IsCompleted && task.Result.Exists)
+                {
+                    // Converte i dati JSON in oggetto UserData
+                    string json = task.Result.GetRawJsonValue();
+                    UserData userData = JsonUtility.FromJson<UserData>(json);
+
+                    // Aggiorna le informazioni nel pannello utente
+                    usernameText.text = $"Username: {userData.email}";
+                    highScoreText.text = $"High Score: {userData.highScore}";
+                }
+                else
+                {
+                    Debug.LogWarning("User data not found in database.");
+                    usernameText.text = $"Username: {user.Email}";
+                    highScoreText.text = "High Score: 0"; // Valore di default
+                }
+            });
         }
     }
 
+    public void UpdateHighScore(int newScore)
+    {
+        FirebaseUser user = auth.CurrentUser;
+        if (user != null)
+        {
+            string userId = user.UserId;
+
+            // Leggi i dati dell'utente dal database
+            databaseReference.Child("users").Child(userId).GetValueAsync().ContinueWithOnMainThread(task =>
+            {
+                if (task.IsCompleted && task.Result.Exists)
+                {
+                    // Converte i dati JSON in oggetto UserData
+                    string json = task.Result.GetRawJsonValue();
+                    UserData userData = JsonUtility.FromJson<UserData>(json);
+
+                    // Confronta il punteggio attuale con quello salvato nel database
+                    if (newScore > userData.highScore)
+                    {
+                        // Se il nuovo punteggio è maggiore, aggiorna il punteggio nel database
+                        userData.highScore = newScore;
+
+                        // Salva il nuovo punteggio nel database
+                        databaseReference.Child("users").Child(userId).SetRawJsonValueAsync(JsonUtility.ToJson(userData));
+
+                        // Aggiorna il pannello utente
+                        highScoreText.text = $"High Score: {newScore}";
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning("User data not found in database.");
+                }
+            });
+        }
+    }
+
+
+}
+
+[System.Serializable]
+public class UserData
+{
+    public string email;     // Email dell'utente
+    public int highScore;    // Record dell'utente
+
+    // Costruttore per inizializzare i dati
+    public UserData(string email, int highScore)
+    {
+        this.email = email;
+        this.highScore = highScore;
+    }
 }

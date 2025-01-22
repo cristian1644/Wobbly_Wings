@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public GameObject pauseButton;
     public GameObject characterMenuButton;
     public GameObject loginMenuButton;
+    public LoginManager loginManager;
 
 
     private int score;
@@ -60,6 +61,7 @@ public class GameManager : MonoBehaviour
         pauseButton.SetActive(false);
         gameOver.SetActive(true);
         playButton.SetActive(true);
+        loginManager.UpdateHighScore(score);
         Pause();
     }
 
