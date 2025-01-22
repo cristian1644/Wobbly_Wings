@@ -15,6 +15,14 @@ public class LoginManager : MonoBehaviour
     private FirebaseAuth auth;          // Riferimento a Firebase Authentication
     private bool isFirebaseReady = false;  // Variabile per sapere se Firebase è pronto
 
+    public GameObject userPanel;         // Riferimento al pannello utente
+    public Text usernameText;           // Riferimento al testo dello username
+    public Text highScoreText;          // Riferimento al testo del punteggio
+
+    private bool isUserLoggedIn = false; // Indica se l'utente è loggato
+
+
+
     private async void Start()
     {
         // Inizializza Firebase in modo asincrono, controllando le dipendenze
@@ -92,7 +100,36 @@ public class LoginManager : MonoBehaviour
                 Debug.Log("Login successful!");
                 // Puoi aggiungere azioni da eseguire dopo un login corretto, ad esempio cambiare scena.
             }
+
+            if (task.IsCompleted && !task.IsFaulted)
+            {
+                isUserLoggedIn = true; // L'utente è ora loggato
+
+                // Nascondi il pannello di login
+                loginPanel.SetActive(false);
+
+                // Mostra il pannello utente
+                userPanel.SetActive(true);
+
+                // Aggiorna i dati utente (es. username e punteggio)
+                UpdateUserInfo();
+            }
+
         });
+    }
+
+    public void OnLogoutButtonClicked()
+    {
+        auth.SignOut();
+        Debug.Log("User logged out.");
+
+        isUserLoggedIn = false; // L'utente non è più loggato
+
+        // Nascondi il pannello utente
+        userPanel.SetActive(false);
+
+        // Mostra il pannello di login
+        loginPanel.SetActive(true);
     }
 
 
@@ -159,6 +196,7 @@ public class LoginManager : MonoBehaviour
         }
 
         loginPanel.SetActive(false);  // Nascondi il menu di login
+        userPanel.SetActive(false);
     }
 
     // Metodo per aprire il menu di login
@@ -170,7 +208,33 @@ public class LoginManager : MonoBehaviour
             return; // Non fare nulla se Firebase non è pronto
         }
 
-        loginPanel.SetActive(true);    // Mostra il pannello di login
-        errorMessage.gameObject.SetActive(false);
+        if (isUserLoggedIn)
+        {
+            // Se l'utente è loggato, mostra direttamente il pannello utente
+            userPanel.SetActive(true);
+            loginPanel.SetActive(false);
+            Debug.Log("User is already logged in. Opening user panel.");
+        }
+        else
+        {
+            // Se l'utente non è loggato, mostra il pannello di login
+            loginPanel.SetActive(true);
+            userPanel.SetActive(false);
+            Debug.Log("User is not logged in. Opening login panel.");
+        }
     }
+
+    private void UpdateUserInfo()
+    {
+        FirebaseUser user = auth.CurrentUser;
+        if (user != null)
+        {
+            // Imposta lo username (puoi cambiarlo se hai altri dati da Firebase)
+            usernameText.text = $"Username: {user.Email}";
+
+            // Recupera il punteggio massimo (placeholder: impostalo manualmente per ora)
+            highScoreText.text = "High Score: 0"; // In futuro, lo collegheremo a un database
+        }
+    }
+
 }
