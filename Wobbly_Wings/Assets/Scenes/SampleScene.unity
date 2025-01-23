@@ -4027,6 +4027,7 @@ MonoBehaviour:
   player: {fileID: 686139420}
   gameManager: {fileID: 1332464684}
   pauseButton: {fileID: 813090653}
+  userPanel: {fileID: 549227113}
   audioManager: {fileID: 1148745918}
   musicSlider: {fileID: 966407046}
   effectsSlider: {fileID: 1336437651}
@@ -6615,8 +6616,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1635727118}
   m_TextComponent: {fileID: 394556970}
   m_Placeholder: {fileID: 1652338670}
-  m_ContentType: 0
-  m_InputType: 0
+  m_ContentType: 7
+  m_InputType: 2
   m_AsteriskChar: 42
   m_KeyboardType: 0
   m_LineType: 0

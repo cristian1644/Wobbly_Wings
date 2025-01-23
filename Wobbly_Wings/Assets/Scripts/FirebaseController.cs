@@ -6,7 +6,24 @@ using System.Threading.Tasks;
 
 public class FirebaseController : MonoBehaviour
 {
+    private static FirebaseController _instance;
+    public static FirebaseController Instance => _instance; // Singleton access
+
     private DatabaseReference reference;
+    private bool isFirebaseInitialized = false;
+
+    private void Awake()
+    {
+        // Imposta il Singleton
+        if (_instance != null && _instance != this)
+        {
+            Destroy(gameObject); // Evita duplicati
+            return;
+        }
+
+        _instance = this;
+        DontDestroyOnLoad(gameObject); // Mantieni l'istanza tra le scene
+    }
 
     async void Start()
     {
@@ -19,7 +36,7 @@ public class FirebaseController : MonoBehaviour
             FirebaseApp app = FirebaseApp.DefaultInstance;
 
             // Imposta l'URL del database
-            string databaseURL = "https://login-53d3f-default-rtdb.europe-west1.firebasedatabase.app/"; // Sostituisci con il tuo URL del database
+            string databaseURL = "https://login-53d3f-default-rtdb.europe-west1.firebasedatabase.app/"; // Sostituisci con il tuo URL
             FirebaseDatabase database = FirebaseDatabase.GetInstance(app, databaseURL); // Specifica l'URL
 
             // Configura la persistenza del database
@@ -29,6 +46,7 @@ public class FirebaseController : MonoBehaviour
             reference = database.RootReference;
 
             Debug.Log("Firebase Initialized successfully!");
+            isFirebaseInitialized = true; // Segnala che Firebase è pronto
         }
         else
         {
@@ -36,12 +54,25 @@ public class FirebaseController : MonoBehaviour
         }
     }
 
+    // Funzione per verificare se Firebase è pronto
+    public bool IsFirebaseReady()
+    {
+        return isFirebaseInitialized;
+    }
+
     // Funzione per scrivere nel database
     public void WriteData(string userId, string username)
     {
+        if (!isFirebaseInitialized)
+        {
+            Debug.LogError("Firebase is not initialized. Cannot write data.");
+            return;
+        }
+
         if (reference != null)
         {
-            reference.Child("users").Child(userId).Child("username").SetValueAsync(username).ContinueWithOnMainThread(task => {
+            reference.Child("users").Child(userId).Child("username").SetValueAsync(username).ContinueWithOnMainThread(task =>
+            {
                 if (task.IsCompleted)
                 {
                     Debug.Log("Data written successfully!");
@@ -61,9 +92,16 @@ public class FirebaseController : MonoBehaviour
     // Funzione per leggere dal database
     public void ReadData(string userId)
     {
+        if (!isFirebaseInitialized)
+        {
+            Debug.LogError("Firebase is not initialized. Cannot read data.");
+            return;
+        }
+
         if (reference != null)
         {
-            reference.Child("users").Child(userId).Child("username").GetValueAsync().ContinueWithOnMainThread(task => {
+            reference.Child("users").Child(userId).Child("username").GetValueAsync().ContinueWithOnMainThread(task =>
+            {
                 if (task.IsFaulted)
                 {
                     Debug.LogError("Error reading data: " + task.Exception);
