@@ -16,6 +16,14 @@ public class AudioManager : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
+
+        // Carica i valori salvati per il volume e applicali
+        float savedMusicVolume = PlayerPrefs.GetFloat("MusicVolume", 0.5f); // Carica il volume salvato, default 0.5
+        musicSource.volume = savedMusicVolume;
+
+        float savedEffectsVolume = PlayerPrefs.GetFloat("EffectsVolume", 0.5f); // Carica il volume salvato, default 0.5
+        flap.volume = savedEffectsVolume;
+        collision.volume = savedEffectsVolume;
     }
 
     public void PlayFlapSound()

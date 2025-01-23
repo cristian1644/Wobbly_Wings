@@ -2645,7 +2645,7 @@ RectTransform:
   m_GameObject: {fileID: 829642446}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.7, y: 1.7, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 934880076}
@@ -2677,6 +2677,7 @@ MonoBehaviour:
   audioManager: {fileID: 1148745918}
   musicSlider: {fileID: 966407046}
   effectsSlider: {fileID: 1336437651}
+  sprites: []
 --- !u!1 &929921011
 GameObject:
   m_ObjectHideFlags: 0
