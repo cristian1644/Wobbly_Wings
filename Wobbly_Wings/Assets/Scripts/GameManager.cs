@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     public Text highScoreLabelText;  // Testo fisso: "High Score:"
     public Text highScoreValueText;  // Punteggio più alto variabile
 
+    private bool doublePoints = false; // Variabile per sapere se i punti doppi sono attivi
+    public float doublePointsDuration = 10f; // Durata del bonus punti doppi
 
     private int score;
 
@@ -51,6 +53,13 @@ public class GameManager : MonoBehaviour
         {
             Destroy(pipes[i].gameObject);
         }
+
+        // Rimuove i powerup esistenti
+        PowerUp[] powerUp = FindObjectsOfType<PowerUp>();
+        for (int i = 0; i < powerUp.Length; i++)
+        {
+            Destroy(powerUp[i].gameObject);
+        }
     }
 
     public void Pause()
@@ -73,9 +82,11 @@ public class GameManager : MonoBehaviour
 
     public void IncreaseScore()
     {
-        score++;
+        // Aumenta il punteggio tenendo conto dei punti doppi
+        score += doublePoints ? 2 : 1;
         scoreText.text = score.ToString();
     }
+
 
     public void UpdateHighScore()
     {
@@ -99,6 +110,18 @@ public class GameManager : MonoBehaviour
         highScoreValueText.text = highScore.ToString();  // Visualizza il punteggio più alto
         highScoreLabelText.gameObject.SetActive(true);  // Attiva "High Score:" (etichetta fissa)
         highScoreValueText.gameObject.SetActive(true);  // Attiva il punteggio più alto
+    }
+
+    public void ActivateDoublePoints()
+    {
+        StartCoroutine(DoublePointsCoroutine());
+    }
+
+    private IEnumerator DoublePointsCoroutine()
+    {
+        doublePoints = true; // Attiva i punti doppi
+        yield return new WaitForSeconds(doublePointsDuration); // Aspetta la durata
+        doublePoints = false; // Disattiva i punti doppi
     }
 
 }

@@ -45,4 +45,5 @@ public class Spawner : MonoBehaviour
         float spawnInterval = Random.Range(minSpawnRate, maxSpawnRate);
         nextSpawnTime = Time.time + spawnInterval;
     }
+
 }
