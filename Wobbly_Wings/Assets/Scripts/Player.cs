@@ -19,6 +19,8 @@ public class Player : MonoBehaviour
     public Sprite[] birdSprites;
     public Sprite[] blueBirdSprites;
     public Sprite[] orangeBirdSprites;
+    public Sprite[] greenBirdSprites;
+    public Sprite[] whiteBirdSprites;
     public Sprite[] beeSprites;
 
     private void Awake()
@@ -41,6 +43,12 @@ public class Player : MonoBehaviour
                 break;
             case 3:
                 ChangeCharacter(beeSprites); // Seleziona il personaggio Bee
+                break;
+            case 4:
+                ChangeCharacter(greenBirdSprites);
+                break;
+            case 5:
+                ChangeCharacter(whiteBirdSprites);
                 break;
             default:
                 ChangeCharacter(birdSprites); // Se non c'è selezione, imposta il personaggio di default
@@ -76,6 +84,12 @@ public class Player : MonoBehaviour
                 break;
             case 3:
                 ChangeCharacter(beeSprites); // Seleziona il personaggio Bee
+                break;
+            case 4:
+                ChangeCharacter(greenBirdSprites);
+                break;
+            case 5:
+                ChangeCharacter(whiteBirdSprites);
                 break;
             default:
                 ChangeCharacter(birdSprites); // Se non c'è selezione, imposta il personaggio di default

@@ -7,11 +7,17 @@ public class CharacterSelectMenu : MonoBehaviour
     public Sprite[] birdSprites; // Sprite per il personaggio "Bird"
     public Sprite[] blueBirdSprites;
     public Sprite[] orangeBirdSprites;
-    public Sprite[] beeSprites; 
+    public Sprite[] beeSprites;
+    public Sprite[] greenBirdSprites;
+    public Sprite[] whiteBirdSprites;
+
     public Button birdButton; // Pulsante per selezionare il personaggio "Bird"
     public Button blueBirdButton;
     public Button orangeBirdButton;
-    public Button beeButton; 
+    public Button beeButton;
+    public Button greenBirdButton;
+    public Button whiteBirdButton;
+
     public GameObject characterMenuButton;
     public GameObject characterSelectPanel; // Pannello del menu di selezione personaggio
 
@@ -22,6 +28,8 @@ public class CharacterSelectMenu : MonoBehaviour
         birdButton.onClick.AddListener(SelectBird);
         blueBirdButton.onClick.AddListener(SelectBlueBird);
         orangeBirdButton.onClick.AddListener(SelectOrangeBird);
+        greenBirdButton.onClick.AddListener(SelectGreenBird);
+        whiteBirdButton.onClick.AddListener(SelectWhiteBird);
         beeButton.onClick.AddListener(SelectBee);
     }
 
@@ -56,6 +64,24 @@ public class CharacterSelectMenu : MonoBehaviour
     {
         player.ChangeCharacter(beeSprites);
         PlayerPrefs.SetInt("SelectedCharacter", 3); // Salva l'indice del personaggio scelto (3 = Bee)
+        PlayerPrefs.Save();
+        characterSelectPanel.SetActive(false);
+        characterMenuButton.SetActive(true);
+    }
+
+    void SelectGreenBird()
+    {
+        player.ChangeCharacter(greenBirdSprites);
+        PlayerPrefs.SetInt("SelectedCharacter", 4); // Salva l'indice del personaggio scelto (1 = BlueBird)
+        PlayerPrefs.Save();
+        characterSelectPanel.SetActive(false);
+        characterMenuButton.SetActive(true);
+    }
+
+    void SelectWhiteBird()
+    {
+        player.ChangeCharacter(whiteBirdSprites);
+        PlayerPrefs.SetInt("SelectedCharacter", 5); // Salva l'indice del personaggio scelto (1 = BlueBird)
         PlayerPrefs.Save();
         characterSelectPanel.SetActive(false);
         characterMenuButton.SetActive(true);

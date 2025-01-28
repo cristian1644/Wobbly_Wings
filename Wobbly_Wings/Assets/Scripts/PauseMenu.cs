@@ -91,6 +91,10 @@ public class PauseMenu : MonoBehaviour
             return 2; // OrangeBird
         if (player.sprites == player.beeSprites)
             return 3; // Bee
+        if (player.sprites == player.greenBirdSprites)
+            return 4;
+        if (player.sprites == player.whiteBirdSprites)
+            return 5;
 
         return 0; // Default, nel caso non venga trovato un personaggio
     }
