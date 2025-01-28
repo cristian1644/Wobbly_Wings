@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public GameObject gameOver;
     public GameObject pauseButton;
     public GameObject characterMenuButton;
+    private AudioManager audioManager;
 
     public Text highScoreLabelText;  // Testo fisso: "High Score:"
     public Text highScoreValueText;  // Punteggio più alto variabile
@@ -26,6 +27,15 @@ public class GameManager : MonoBehaviour
     {
         Application.targetFrameRate = 60;
         Pause(); // Il gioco parte in pausa
+    }
+
+    private void Start()
+    {
+        audioManager = FindObjectOfType<AudioManager>();
+        if (audioManager == null)
+        {
+            Debug.LogWarning("AudioManager non è stato trovato nella scena.");
+        }
     }
 
     public void Play()
@@ -106,7 +116,7 @@ public class GameManager : MonoBehaviour
     {
         // Carica il punteggio più alto
         int highScore = PlayerPrefs.GetInt("HighScore", 0);
-
+        
         highScoreValueText.text = highScore.ToString();  // Visualizza il punteggio più alto
         highScoreLabelText.gameObject.SetActive(true);  // Attiva "High Score:" (etichetta fissa)
         highScoreValueText.gameObject.SetActive(true);  // Attiva il punteggio più alto
@@ -120,6 +130,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator DoublePointsCoroutine()
     {
         doublePoints = true; // Attiva i punti doppi
+        audioManager.PlayPowerUpSound();
         yield return new WaitForSeconds(doublePointsDuration); // Aspetta la durata
         doublePoints = false; // Disattiva i punti doppi
     }

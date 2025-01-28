@@ -5,6 +5,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip flapSound;
     public AudioClip collisionSound;
     public AudioClip scoreSound;
+    public AudioClip powerUpSound;
 
     public AudioSource musicSource;   // AudioSource per la musica di sottofondo
     public AudioSource effectsSource; // AudioSource per gli effetti sonori
@@ -12,6 +13,7 @@ public class AudioManager : MonoBehaviour
     private AudioSource audioSource;
     public AudioSource flap;
     public AudioSource collision;
+    public AudioSource powerUp;
 
     void Start()
     {
@@ -39,6 +41,11 @@ public class AudioManager : MonoBehaviour
     public void PlayScoreSound()
     {
         audioSource.PlayOneShot(scoreSound);
+    }
+
+    public void PlayPowerUpSound()
+    {
+        powerUp.PlayOneShot(powerUpSound);
     }
 
     // Metodo per aggiornare il volume della musica
